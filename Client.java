@@ -10,18 +10,17 @@ public class Client {
       try {
          System.out.println("Connecting to " + serverName + " on port " + port);
          Socket client = new Socket(serverName, port);
+         // Buffers
+         InputStream inFromServer = client.getInputStream();
+         DataInputStream in = new DataInputStream(inFromServer);
          
          System.out.println("Just connected to " + client.getRemoteSocketAddress());
          OutputStream outToServer = client.getOutputStream();
          DataOutputStream out = new DataOutputStream(outToServer);
          
-		 //out.writeUTF("Hello from " + client.getLocalSocketAddress());
 		 byte b = 10;
 		 byte[] bytes = {b};
          out.write(bytes);
-         
-         InputStream inFromServer = client.getInputStream();
-         DataInputStream in = new DataInputStream(inFromServer);
          
          // ---
          byte[] data = new byte[512];
@@ -29,9 +28,11 @@ public class Client {
          int count = in.read(data);
          System.out.println("Count es "+count);
          System.out.println(Arrays.toString(data));
-         // ----
-         //System.out.println("Server says " + in.readUTF());
          System.out.println("Server says " + in.read());
+         // ----
+         b = 30;
+         out.write(b);
+         
          client.close();
       } catch (IOException e) {
          e.printStackTrace();

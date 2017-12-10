@@ -1,4 +1,5 @@
 // File Name GreetingServer.java
+//https://stackoverflow.com/questions/33087890/multithreading-with-client-server-program
 import java.net.*;
 import java.io.*;
 import java.util.Arrays;
@@ -17,7 +18,6 @@ public class Server extends Thread {
    }
 
    public void run() {
-      while(true) {
          try {
             System.out.println("Waiting for client on port " + serverSocket.getLocalPort() + "...");
             Socket server = serverSocket.accept();
@@ -25,8 +25,8 @@ public class Server extends Thread {
             System.out.println("Just connected to " + server.getRemoteSocketAddress());
             DataInputStream in = new DataInputStream(server.getInputStream());
             DataOutputStream out = new DataOutputStream(server.getOutputStream());
-            
-            byte[] recibidos = new byte[3];
+            while(true) {
+			byte[] recibidos = new byte[3];
             int numbytes = in.read(recibidos);
             System.out.println(in.available());
             System.out.println("Numero de bytes recibidos "+numbytes);
@@ -46,26 +46,29 @@ public class Server extends Thread {
 						break;
 					// decidio capturar el pokemon
 					case 30:
-						
+						System.out.println("Intentos: "+this.intentos);
+						if(this.intentos > 0){
+							if(this.estado == 1){
+								System.out.println("Puedes capturar");
+								byte resx = (byte)(((Math.random()* 10)) %2) ;
+								System.out.println("El resultado fue"+resx);
+								if(resx == 1){
+									System.out.println("Packemon capturado");
+								}
+							}else{
+								System.out.println("Intento de captura en un edo no valido");
+							}
+						}else{
+							System.out.println("Intentos agotados");
+							// Debo mandar el paquete 23
+						}
 				}
 			}catch(Exception e){	
-				
+				System.out.println("Error al recibir la informacion");
 			}
-            //System.out.println(in.readUTF());
-           
-            //DataOutputStream out = new DataOutputStream(server.getOutputStream());
-            //out.writeUTF("Thank you for connecting to " + server.getLocalSocketAddress() + "\nGoodbye!");
-            //server.close();
-            
-         } catch (SocketTimeoutException s) {
-            System.out.println("Socket timed out!");
-            break;
-         } catch (IOException e) {
-            e.printStackTrace();
-            break;
-         }
       }
-   }
+   }catch(Exception ex){System.out.println("Error");}
+}
    
    public static void main(String [] args) {
       int port = Integer.parseInt("9999");
