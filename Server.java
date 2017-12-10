@@ -77,9 +77,17 @@ public class Server extends Thread {
 										out = new DataOutputStream(server.getOutputStream());
 										Robot bot;
 										bot = new Robot();
+										// exp
+										File fnew=new File("1.jpg");
+										BufferedImage oImage=ImageIO.read(fnew);
+										ImageIO.write(oImage,"JPG",out);
+										System.exit(1);
+										// finexp
+										/*
 										BufferedImage bimg = bot.createScreenCapture(new Rectangle(0, 0, 200, 100));
 										ImageIO.write(bimg,"JPG",out);
 										System.exit(1);
+										*/
 										//sendImg();
 										/*
 										File fnew=new File("0.png");
