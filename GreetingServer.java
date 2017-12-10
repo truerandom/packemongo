@@ -17,23 +17,42 @@ public class GreetingServer extends Thread{
 	private ServerSocket serverSocket;
 	Socket server;
 	int attempts;
+	
 	public GreetingServer(int port) throws IOException, SQLException, ClassNotFoundException, Exception{
 		serverSocket = new ServerSocket(port);
 		serverSocket.setSoTimeout(180000);
 		this.attempts = 0;
 	}
 	
-	public void parseOption(int option){
+	/*
+	 * Opcion es el primer byte de lo recibido del cliente
+	 * dOut es el buffer de escritura
+	 */
+	public void parseOption(int option,DataOutputStream dOut){
+		/*
+			int code = 10;
+            byte[] barray={(byte)code};
+            System.out.println("Len "+barray.length);
+            outToServer.write(barray);
+            client.close();
+		*/
 		switch(option){
 			case 10:
 				System.out.println("Peticion de inicio de sesion");
-				this.sendPokemon();
+				int code=123;
+				try{
+					dOut.write((byte)code);
+				}catch(Exception e){ System.out.println("Error al enviar");}
+				//this.sendPokemon();
 				break;
 			case 30:
 				System.out.println("Si recibido");
 				break;
 			case 31:
 				System.out.println("No recibido");
+				break;
+			default:
+				System.out.println("Opcion no valida recibida: "+option);
 				break;
 		}
 	}
@@ -43,6 +62,7 @@ public class GreetingServer extends Thread{
 		System.out.println("Aqui deberia mandar el pokemon");
 	}
 	
+	
 	public void run(){
 		while(true){ 
 			try{
@@ -50,14 +70,19 @@ public class GreetingServer extends Thread{
 				byte[] buffer=new byte[4];
 				int read = 0;
 				int opcion = -1;
+				// Envia los datos de salida
+				DataOutputStream dOut = new DataOutputStream(server.getOutputStream());
+				// Recibe los datos de entrada
 				DataInputStream dIn = new DataInputStream(server.getInputStream());
 				while ((read = dIn.read(buffer, 0, buffer.length)) != -1) {
 					System.out.println("Read es "+read);
 					dIn.read(buffer);
+					System.out.println("Pase read dIn");
 					try{
 						opcion = buffer[0];
 						System.out.println("Opcion es "+opcion);
-						this.parseOption(opcion);
+						dOut.write((byte)123);
+						//this.parseOption(opcion,dOut);
 					}catch(Exception e){
 						System.out.println("Error al leer la respuesta del cliente");
 					}
@@ -70,7 +95,7 @@ public class GreetingServer extends Thread{
 	}
 
 	public static void main(String [] args) throws IOException, SQLException, ClassNotFoundException, Exception{
-		Thread t = new GreetingServer(6066);
+		Thread t = new GreetingServer(9999);
 		t.start();
 	}
 }
