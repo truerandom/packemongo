@@ -19,7 +19,7 @@ public class Server extends Thread {
    public Server(Socket server,int port) throws IOException {
       //serverSocket = new ServerSocket(port);
       //serverSocket.setSoTimeout(18000);
-      System.out.println("Entre al constructor con servers");
+      //System.out.println("Entre al constructor con servers");
       this.server = server;
       System.out.println(server);
       //intentos de captura
@@ -31,9 +31,8 @@ public class Server extends Thread {
    public void run() {
          try {
             //System.out.println("Waiting for client on port " + serverSocket.getLocalPort() + "...");
-            //Socket server = serverSocket.accept();
-            
-            System.out.println("Just connected to " + this.server.getRemoteSocketAddress());
+            //Socket server = serverSocket.accept();    
+            System.out.println("Conectado a " + this.server.getRemoteSocketAddress());
             DataInputStream in = new DataInputStream(server.getInputStream());
             DataOutputStream out = new DataOutputStream(server.getOutputStream());
             int c = 0;
@@ -42,14 +41,13 @@ public class Server extends Thread {
 			byte[] arr;
 			boolean continuar=true;
             while(!this.isInterrupted() && c < 50) {
-				System.out.println("Processing with "+server);
+				System.out.println("\nProcesando "+server);
 				byte[] recibidos = new byte[3];
 				int numbytes = in.read(recibidos);
 				//System.out.println(in.available());
 				System.out.println("Numero de bytes recibidos "+numbytes);
 				c++;
 				if(numbytes!=-1){
-					System.out.println("Debo procesar");
 					System.out.println("Recibido "+Arrays.toString(recibidos));
 					int opcion = recibidos[0];
 					switch(opcion){
@@ -68,39 +66,24 @@ public class Server extends Thread {
 							System.out.println("Intentos: "+this.intentos);
 							if(this.intentos > 0){
 								if(this.estado == 1){
-									System.out.println("Puedes capturar");
+									System.out.println("Puede capturar");
 									byte resx = (byte)(((Math.random()* 10)) %3);
-									System.out.println("El resultado fue"+resx);
 									//if(resx == 1){ //Chanfle
 									if(resx == 1){
 										System.out.println("Packemon capturado");
 										arr = new byte[]{22,pokid,100};
 										out.write(arr);
-										System.out.println("Enviando img");
+										System.out.println("Enviando pockemon");
 										// Leo la img
-										// Funcion
-										//Chanfleloquitearr = new byte[]{8,8,8,8,8,8,8,8};
-										//out.write(arr);
 										out = new DataOutputStream(server.getOutputStream());
-										System.out.println("pase out");
-										//Robot bot;
-										//bot = new Robot();
 										// exp
 										File fnew=new File("1.jpg");
 										BufferedImage oImage=ImageIO.read(fnew);
-										System.out.println("pase oimage");
 										ImageIO.write(oImage,"JPG",out);	
-										System.out.println("pase write");
-										//exit
 										this.server.close();
-										// finexp
-										/*
-										BufferedImage bimg = bot.createScreenCapture(new Rectangle(0, 0, 200, 100));
-										ImageIO.write(bimg,"JPG",out);
-										System.exit(1);
-										*/
 									}
 									else{
+										System.out.println("Pokemon no capturado");
 										arr = new byte[]{21,pokid,this.intentos};
 										intentos--;
 										out.write(arr);
@@ -144,7 +127,7 @@ public class Server extends Thread {
 		  //Socket server = null;
 		  while(true){
 				Socket server = serverSocket.accept();
-				System.out.println(server);
+				//System.out.println(server);
 				Thread t = new Server(server,port);
 				t.start();			  
 		  }

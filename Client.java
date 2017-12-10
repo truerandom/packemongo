@@ -43,7 +43,7 @@ public class Client {
 						idpok = data[1];
 						imgsize = data[2];
 						System.out.println("Pokemon capturado "+idpok);
-						System.out.println("Img size: "+imgsize);
+						//System.out.println("Img size: "+imgsize);
 						//Aqui recibo los siguientes paquetes
 						getImage(in);
 						return 0;
@@ -74,7 +74,7 @@ public class Client {
 	
 	public static void getImage(DataInputStream in){
 		String fname="pokemon";
-		System.out.println("Entre a getImage");
+		//System.out.println("Entre a getImage");
 		byte[] data = new byte[1024];
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		//Cuantos datos envio el server
@@ -84,7 +84,7 @@ public class Client {
 				baos.write(read);
 			}
 		}catch(Exception e){ System.out.println(e);}
-		System.out.println(baos);
+		//System.out.println(baos);
 		try (FileOutputStream fos = new FileOutputStream(fname)) {
 		   fos.write(baos.toByteArray());
 		   fos.close();
@@ -159,12 +159,12 @@ public class Client {
 	
 	public static void sendResponse(DataOutputStream out,Scanner sc){
 		String linea = sc.nextLine();
-		System.out.println("linea "+linea);
+		//System.out.println("linea "+linea);
 		if(linea.equals("y")){
-			System.out.println("SI");
+			//System.out.println("SI");
 			enviaSi(out);
 		}else{
-			System.out.println("NO");
+			//System.out.println("NO");
 			enviaNo(out);
 		}
 		//parseResponse(in);
@@ -175,13 +175,13 @@ public class Client {
 		int port = Integer.parseInt("9999");
 		try {
 			// Inicio de conexion y edatos
-			System.out.println("Connecting to " + serverName + " on port " + port);
+			//System.out.println("Connecting to " + serverName + " on port " + port);
 			Socket client = new Socket(serverName, port);
 			Scanner sc = new Scanner(System.in);
 			// Buffers
 			InputStream inFromServer = client.getInputStream();
 			DataInputStream in = new DataInputStream(inFromServer);
-			System.out.println("Just connected to " + client.getRemoteSocketAddress());
+			System.out.println("Conectado a " + client.getRemoteSocketAddress());
 			OutputStream outToServer = client.getOutputStream();
 			DataOutputStream out = new DataOutputStream(outToServer);
 			// Inicio de conexion y edatos
