@@ -32,12 +32,12 @@ public class Client {
 				switch(data[0]){
 					case 20:
 						idpok= data[1];
-						System.out.println("Capturar pokemon? id "+idpok);
+						System.out.print("\nCapturar pokemon id "+idpok+"? y/n\t");
 						return 1;
 					case 21:
 						idpok = data[1];
 						intentos = data[2];
-						System.out.println("Reintentar id "+idpok+" intentos "+intentos);
+						System.out.print("Reintentar id "+idpok+" intentos "+intentos+"? y/n\t");
 						return 1;
 					case 22:
 						idpok = data[1];
@@ -148,7 +148,6 @@ public class Client {
 	
 	public static void terminaSesion(DataOutputStream out){
 		try{
-			System.out.println("Entre a termina sesion");
 			byte b = 32;
 			byte[] bytes = {b};
 			out.write(bytes);
