@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
 import java.awt.Robot;
+// xdg-open abre la imagen con el manejador default
 public class Server extends Thread {
    private ServerSocket serverSocket;
    byte intentos;
@@ -87,17 +88,6 @@ public class Server extends Thread {
 										BufferedImage bimg = bot.createScreenCapture(new Rectangle(0, 0, 200, 100));
 										ImageIO.write(bimg,"JPG",out);
 										System.exit(1);
-										*/
-										//sendImg();
-										/*
-										File fnew=new File("0.png");
-										BufferedImage originalImage=ImageIO.read(fnew);
-										ByteArrayOutputStream baos=new ByteArrayOutputStream();
-										ImageIO.write(originalImage, "png", baos );
-										arr = baos.toByteArray();
-										System.out.println("Len Arr de img "+arr.length);
-										out.write(arr);
-										System.out.println("Imagen enviada");
 										*/
 									}
 									else{
