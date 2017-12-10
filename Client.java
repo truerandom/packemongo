@@ -102,15 +102,6 @@ public class Client {
 			// Chanfle similar a getchar en c
 			Scanner sc = new Scanner(System.in);
 			sc.nextLine();
-			/*
-			final Runtime rt = Runtime.getRuntime();
-			rt.exec("xdg-open pokemon");
-			*/
-			/*
-			if (Desktop.isDesktopSupported()) {
-				Desktop.getDesktop().open(new File(fname));
-			} 
-			*/
 		}catch(Exception ex){
 			System.out.println("Error at getImage "+ex);
 		}
