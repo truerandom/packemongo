@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 public class Client {
 	// Parse response debe regresar un entero indicando si a continuacion debe haber entrada del usuario
+	// El caso default es cuando se recibe la imagen
 	public static void parseResponse(DataInputStream in,DataOutputStream out){
 		try{
 			System.out.println("Entre a parseResponse");
@@ -15,7 +16,7 @@ public class Client {
 			int intentos=-1;
 			int imgsize = -1;
 			System.out.println("Count es "+count);
-			for(int i=0;i<count;i++)
+			for(int i=0;i<count;i++)	
 				System.out.print(data[i]+" ");
 			if(count >0){
 				switch(data[0]){
