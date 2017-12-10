@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 public class Server extends Thread {
    private ServerSocket serverSocket;
-   int intentos;
+   byte intentos;
    int estado;
    public Server(int port) throws IOException {
       serverSocket = new ServerSocket(port);
@@ -25,49 +25,61 @@ public class Server extends Thread {
             System.out.println("Just connected to " + server.getRemoteSocketAddress());
             DataInputStream in = new DataInputStream(server.getInputStream());
             DataOutputStream out = new DataOutputStream(server.getOutputStream());
-            while(true) {
-			byte[] recibidos = new byte[3];
-            int numbytes = in.read(recibidos);
-            System.out.println(in.available());
-            System.out.println("Numero de bytes recibidos "+numbytes);
-            System.out.println("Recibido "+Arrays.toString(recibidos));
-            try{
-				int opcion = recibidos[0];
-				switch(opcion){
-					// Se recibio un intento de conexion
-					case 10:
-						System.out.println("Recibi inicio de conexion");
-						this.estado = 1;
-						byte res = 20;
-						byte pokid = (byte)((Math.random()* 10));
-						byte[] arr = {res,pokid};
-						System.out.println("Pok id "+pokid);
-						out.write(arr);
-						break;
-					// decidio capturar el pokemon
-					case 30:
-						System.out.println("Intentos: "+this.intentos);
-						if(this.intentos > 0){
-							if(this.estado == 1){
-								System.out.println("Puedes capturar");
-								byte resx = (byte)(((Math.random()* 10)) %2) ;
-								System.out.println("El resultado fue"+resx);
-								if(resx == 1){
-									System.out.println("Packemon capturado");
+            int c = 0;
+            byte res=0;
+			byte pokid=-1;
+			byte[] arr;
+            while(true && c < 10) {
+				byte[] recibidos = new byte[3];
+				
+				int numbytes = in.read(recibidos);
+				//System.out.println(in.available());
+				System.out.println("Numero de bytes recibidos "+numbytes);
+				c++;
+				if(numbytes!=-1){
+					System.out.println("Debo procesar");
+					System.out.println("Recibido "+Arrays.toString(recibidos));
+					int opcion = recibidos[0];
+					switch(opcion){
+						// Se recibio un intento de conexion
+						case 10:
+							System.out.println("Recibi inicio de conexion");
+							this.estado = 1;
+							res = 20;
+							pokid = (byte)((Math.random()* 10));
+							arr = new byte[]{res,pokid};
+							System.out.println("Pok id "+pokid);
+							out.write(arr);
+							break;
+						// decidio capturar el pokemon
+						case 30:
+							System.out.println("Intentos: "+this.intentos);
+							if(this.intentos > 0){
+								if(this.estado == 1){
+									System.out.println("Puedes capturar");
+									byte resx = (byte)(((Math.random()* 10)) %5) ;
+									System.out.println("El resultado fue"+resx);
+									if(resx == 1){
+										System.out.println("Packemon capturado");
+									}
+									else{
+										arr = new byte[]{22,pokid,this.intentos};
+										intentos--;
+										out.write(arr);
+									}
+								}else{
+									System.out.println("Intento de captura en un edo no valido");
 								}
 							}else{
-								System.out.println("Intento de captura en un edo no valido");
+								System.out.println("Intentos agotados");
+								// Debo mandar el paquete 23
 							}
-						}else{
-							System.out.println("Intentos agotados");
-							// Debo mandar el paquete 23
-						}
+					}
+				}else{
+					System.exit(1);
 				}
-			}catch(Exception e){	
-				System.out.println("Error al recibir la informacion");
-			}
-      }
-   }catch(Exception ex){System.out.println("Error");}
+		  }
+   }catch(Exception ex){System.out.println("Error"+ex);}
 }
    
    public static void main(String [] args) {
