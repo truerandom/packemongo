@@ -4,6 +4,10 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.*;
+import java.awt.Desktop;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.image.BufferedImage;
 public class Client {
 	// Parse response debe regresar un entero indicando si a continuacion debe haber entrada del usuario
 	// 1 entrada del usuario 0 eoc
@@ -48,16 +52,6 @@ public class Client {
 						terminaSesion(out);
 						return 0;
 					case 32:
-						/*
-						ByteArrayOutputStream imgstream = new ByteArrayOutputStream();
-						for(int i=0;i<myBytes.size();i++)
-							imgstream.write((byte[])myBytes.get(i));
-						byte c[] = imgstream.toByteArray();
-						System.out.println("IMG SIZE "+c.length);
-						
-						System.out.println(myBytes);
-						System.out.println(myBytes.size());
-						*/
 						System.out.println("Terminando sesion");
 						System.exit(1);
 						return 0;
@@ -79,6 +73,7 @@ public class Client {
 	}
 	
 	public static void getImage(DataInputStream in){
+		String fname="pokemon";
 		System.out.println("Entre a getImage");
 		byte[] data = new byte[1024];
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -90,10 +85,35 @@ public class Client {
 			}
 		}catch(Exception e){ System.out.println(e);}
 		System.out.println(baos);
-		try (FileOutputStream fos = new FileOutputStream("caca")) {
+		try (FileOutputStream fos = new FileOutputStream(fname)) {
 		   fos.write(baos.toByteArray());
 		   fos.close();
-		}catch(Exception e){System.out.println(e);}
+		}catch(Exception e){
+			System.out.println("Cant write img "+e);
+		}try{
+			BufferedImage image = ImageIO.read(new File(fname));
+			JLabel label = new JLabel(new ImageIcon(image));
+			JFrame f = new JFrame();
+			f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			f.getContentPane().add(label);
+			f.pack();
+			f.setLocation(200,200);
+			f.setVisible(true);
+			// Chanfle similar a getchar en c
+			Scanner sc = new Scanner(System.in);
+			sc.nextLine();
+			/*
+			final Runtime rt = Runtime.getRuntime();
+			rt.exec("xdg-open pokemon");
+			*/
+			/*
+			if (Desktop.isDesktopSupported()) {
+				Desktop.getDesktop().open(new File(fname));
+			} 
+			*/
+		}catch(Exception ex){
+			System.out.println("Error at getImage "+ex);
+		}
 	}
 	
 	public static void iniciaConexion(DataOutputStream out){

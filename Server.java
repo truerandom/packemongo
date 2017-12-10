@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
 import java.awt.Robot;
+import java.awt.Desktop;
 // xdg-open abre la imagen con el manejador default
 public class Server extends Thread {
    private ServerSocket serverSocket;
@@ -63,17 +64,17 @@ public class Server extends Thread {
 							if(this.intentos > 0){
 								if(this.estado == 1){
 									System.out.println("Puedes capturar");
-									byte resx = (byte)(((Math.random()* 10)) %2);
+									byte resx = (byte)(((Math.random()* 10)) %3);
 									System.out.println("El resultado fue"+resx);
 									//if(resx == 1){ //Chanfle
-									if(resx >= 0){
+									if(resx == 1){
 										System.out.println("Packemon capturado");
 										arr = new byte[]{22,pokid,100};
 										out.write(arr);
 										System.out.println("Enviando img");
 										// Leo la img
 										// Funcion
-										arr = new byte[]{8,8,8,8,8,8,8,8};
+										//Chanfleloquitearr = new byte[]{8,8,8,8,8,8,8,8};
 										out.write(arr);
 										out = new DataOutputStream(server.getOutputStream());
 										Robot bot;
