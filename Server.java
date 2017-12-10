@@ -57,12 +57,16 @@ public class Server extends Thread {
 							if(this.intentos > 0){
 								if(this.estado == 1){
 									System.out.println("Puedes capturar");
-									byte resx = (byte)(((Math.random()* 10)) %7) ;
+									byte resx = (byte)(((Math.random()* 10)) %3) ;
 									System.out.println("El resultado fue"+resx);
 									if(resx == 1){
 										System.out.println("Packemon capturado");
 										arr = new byte[]{22,pokid,100};
 										out.write(arr);
+										System.out.println("Enviando img");
+										arr = new byte[2000];
+										out.write(arr);
+										System.out.println("Imagen enviada");
 									}
 									else{
 										arr = new byte[]{21,pokid,this.intentos};
@@ -79,6 +83,10 @@ public class Server extends Thread {
 								out.write(arr);
 							}
 							break;
+						case 31:
+							System.out.println("Terminando la sesion del cliente");
+							arr = new byte[]{32};
+							out.write(arr);
 						case 32:
 							System.out.println("Terminando la sesion del cliente");
 							arr = new byte[]{32};

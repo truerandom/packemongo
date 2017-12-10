@@ -5,8 +5,9 @@ import java.util.Arrays;
 import java.util.Scanner;
 public class Client {
 	// Parse response debe regresar un entero indicando si a continuacion debe haber entrada del usuario
+	// 1 entrada del usuario 0 eoc
 	// El caso default es cuando se recibe la imagen
-	public static void parseResponse(DataInputStream in,DataOutputStream out){
+	public static int parseResponse(DataInputStream in,DataOutputStream out){
 		try{
 			System.out.println("Entre a parseResponse");
 			byte[] data = new byte[512];
@@ -23,32 +24,34 @@ public class Client {
 					case 20:
 						idpok= data[1];
 						System.out.println("Capturar pokemon? id "+idpok);
-						break;
+						return 1;
 					case 21:
 						idpok = data[1];
 						intentos = data[2];
 						System.out.println("Reintentar id "+idpok+" intentos "+intentos);
-						break;
+						return 1;
 					case 22:
 						idpok = data[1];
 						imgsize = data[2];
 						System.out.println("Pokemon capturado "+idpok);
 						System.out.println("Img size: "+imgsize);
 						//Aqui recibo los siguientes paquetes
-						break;
+						return 0;
 					case 23:
 						System.out.println("Intentos agotados");
 						terminaSesion(out);
-						break;
+						return 0;
 					case 32:
 						System.out.println("Terminando sesion");
 						System.exit(1);
-						break;
+						return 0;
 				}
 			}
+			return 0;
 			//System.out.println(Arrays.toString(data));
 		}catch(Exception ex){
 			System.out.println("ClientResponse: "+ex);
+			return 0;
 		}
 	}
 	
@@ -124,8 +127,8 @@ public class Client {
 			iniciaConexion(out);
 			// Parse response
 			while(true){
-				parseResponse(in,out);
-				sendResponse(out,sc);
+				if(parseResponse(in,out) == 1)
+					sendResponse(out,sc);
 			}
 			//client.close();
 		} catch (IOException e) {
