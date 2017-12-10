@@ -19,7 +19,7 @@ public class Client {
 			System.out.println("Count es "+count);
 			for(int i=0;i<count;i++)	
 				System.out.print(data[i]+" ");
-			if(count >0){
+			if(count !=-1){
 				switch(data[0]){
 					case 20:
 						idpok= data[1];
@@ -46,6 +46,8 @@ public class Client {
 						System.exit(1);
 						return 0;
 				}
+			}else{
+				System.exit(1);
 			}
 			return 0;
 			//System.out.println(Arrays.toString(data));

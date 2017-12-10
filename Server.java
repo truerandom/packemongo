@@ -3,7 +3,10 @@
 import java.net.*;
 import java.io.*;
 import java.util.Arrays;
-
+import java.nio.file.Files;
+import java.io.File;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 public class Server extends Thread {
    private ServerSocket serverSocket;
    byte intentos;
@@ -64,7 +67,14 @@ public class Server extends Thread {
 										arr = new byte[]{22,pokid,100};
 										out.write(arr);
 										System.out.println("Enviando img");
-										arr = new byte[2000];
+										// Leo la img
+										// Funcion
+										File fnew=new File("0.png");
+										BufferedImage originalImage=ImageIO.read(fnew);
+										ByteArrayOutputStream baos=new ByteArrayOutputStream();
+										ImageIO.write(originalImage, "png", baos );
+										arr = baos.toByteArray();
+										System.out.println("Len Arr de img "+arr.length);
 										out.write(arr);
 										System.out.println("Imagen enviada");
 									}
