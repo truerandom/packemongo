@@ -3,22 +3,27 @@ import java.net.*;
 import java.io.*;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.*;
 public class Client {
 	// Parse response debe regresar un entero indicando si a continuacion debe haber entrada del usuario
 	// 1 entrada del usuario 0 eoc
 	// El caso default es cuando se recibe la imagen
+	// debo tener un buffer para ir guardando lo de la imagen
+	static List myBytes = new ArrayList<Byte>();
 	public static int parseResponse(DataInputStream in,DataOutputStream out){
 		try{
-			System.out.println("Entre a parseResponse");
-			byte[] data = new byte[512];
+			//System.out.println("Entre a parseResponse");
+			byte[] data = new byte[1024];
 			//Cuantos datos envio el server
 			int count = in.read(data);
 			int idpok=-1;
 			int intentos=-1;
 			int imgsize = -1;
-			System.out.println("Count es "+count);
+			//System.out.println("Count es "+count);
+			/*
 			for(int i=0;i<count;i++)	
 				System.out.print(data[i]+" ");
+			*/
 			if(count !=-1){
 				switch(data[0]){
 					case 20:
@@ -36,13 +41,29 @@ public class Client {
 						System.out.println("Pokemon capturado "+idpok);
 						System.out.println("Img size: "+imgsize);
 						//Aqui recibo los siguientes paquetes
+						getImage(in);
 						return 0;
 					case 23:
 						System.out.println("Intentos agotados");
 						terminaSesion(out);
 						return 0;
 					case 32:
+						/*
+						ByteArrayOutputStream imgstream = new ByteArrayOutputStream();
+						for(int i=0;i<myBytes.size();i++)
+							imgstream.write((byte[])myBytes.get(i));
+						byte c[] = imgstream.toByteArray();
+						System.out.println("IMG SIZE "+c.length);
+						
+						System.out.println(myBytes);
+						System.out.println(myBytes.size());
+						*/
 						System.out.println("Terminando sesion");
+						System.exit(1);
+						return 0;
+					//Si no es algun caso anterior lo pego a buffer de img
+					default:
+						System.out.println("Entre a def no deberia");
 						System.exit(1);
 						return 0;
 				}
@@ -55,6 +76,24 @@ public class Client {
 			System.out.println("ClientResponse: "+ex);
 			return 0;
 		}
+	}
+	
+	public static void getImage(DataInputStream in){
+		System.out.println("Entre a getImage");
+		byte[] data = new byte[1024];
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		//Cuantos datos envio el server
+		int read;
+		try{
+			while((read = in.read()) != -1) {
+				baos.write(read);
+			}
+		}catch(Exception e){ System.out.println(e);}
+		System.out.println(baos);
+		try (FileOutputStream fos = new FileOutputStream("caca")) {
+		   fos.write(baos.toByteArray());
+		   fos.close();
+		}catch(Exception e){System.out.println(e);}
 	}
 	
 	public static void iniciaConexion(DataOutputStream out){

@@ -7,6 +7,8 @@ import java.nio.file.Files;
 import java.io.File;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.awt.Rectangle;
+import java.awt.Robot;
 public class Server extends Thread {
    private ServerSocket serverSocket;
    byte intentos;
@@ -19,7 +21,7 @@ public class Server extends Thread {
       //estado
       estado = 0;
    }
-
+	
    public void run() {
          try {
             System.out.println("Waiting for client on port " + serverSocket.getLocalPort() + "...");
@@ -32,7 +34,7 @@ public class Server extends Thread {
             byte res=0;
 			byte pokid=-1;
 			byte[] arr;
-            while(true && c < 10) {
+            while(true && c < 50) {
 				byte[] recibidos = new byte[3];
 				
 				int numbytes = in.read(recibidos);
@@ -60,15 +62,26 @@ public class Server extends Thread {
 							if(this.intentos > 0){
 								if(this.estado == 1){
 									System.out.println("Puedes capturar");
-									byte resx = (byte)(((Math.random()* 10)) %3) ;
+									byte resx = (byte)(((Math.random()* 10)) %2);
 									System.out.println("El resultado fue"+resx);
-									if(resx == 1){
+									//if(resx == 1){ //Chanfle
+									if(resx >= 0){
 										System.out.println("Packemon capturado");
 										arr = new byte[]{22,pokid,100};
 										out.write(arr);
 										System.out.println("Enviando img");
 										// Leo la img
 										// Funcion
+										arr = new byte[]{8,8,8,8,8,8,8,8};
+										out.write(arr);
+										out = new DataOutputStream(server.getOutputStream());
+										Robot bot;
+										bot = new Robot();
+										BufferedImage bimg = bot.createScreenCapture(new Rectangle(0, 0, 200, 100));
+										ImageIO.write(bimg,"JPG",out);
+										System.exit(1);
+										//sendImg();
+										/*
 										File fnew=new File("0.png");
 										BufferedImage originalImage=ImageIO.read(fnew);
 										ByteArrayOutputStream baos=new ByteArrayOutputStream();
@@ -77,6 +90,7 @@ public class Server extends Thread {
 										System.out.println("Len Arr de img "+arr.length);
 										out.write(arr);
 										System.out.println("Imagen enviada");
+										*/
 									}
 									else{
 										arr = new byte[]{21,pokid,this.intentos};
