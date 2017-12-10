@@ -107,25 +107,30 @@ public class Server extends Thread {
 									}
 								}else{
 									System.out.println("Intento de captura en un edo no valido");
+									this.server.close();
 								}
 							}else{
 								System.out.println("Intentos agotados");
 								// Debo mandar el paquete 23
 								arr = new byte[]{23};
 								out.write(arr);
+								this.server.close();
 							}
 							break;
 						case 31:
 							System.out.println("Terminando la sesion del cliente");
 							arr = new byte[]{32};
 							out.write(arr);
+							this.server.close();
 						case 32:
 							System.out.println("Terminando la sesion del cliente");
 							arr = new byte[]{32};
 							out.write(arr);
+							this.server.close();
 					}
 				}else{
-					System.exit(1);
+					//System.exit(1);
+					this.server.close();
 				}
 		  }
 		  return;
