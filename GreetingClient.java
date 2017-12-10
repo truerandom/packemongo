@@ -11,10 +11,10 @@ import java.net.*;
 
 
 public class GreetingClient{
+	
     Image newimg;
     static BufferedImage bimg;
     byte[] bytes;
-
     public static void main(String [] args){
         String serverName = "localhost";
         int port = 6066;
@@ -26,19 +26,6 @@ public class GreetingClient{
             System.out.println("Len "+barray.length);
             outToServer.write(barray);
             client.close();
-            /*
-				Socket clientSocket = new Socket("localhost", 6789);
-				DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
-				BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-				outToServer.write(msg);
-             */
-            /*
-            Robot bot;
-            bot = new Robot();
-            bimg = bot.createScreenCapture(new Rectangle(0, 0, 200, 100));
-            ImageIO.write(bimg,"JPG",client.getOutputStream());
-            client.close();
-            */
         } catch(Exception e) {
             e.printStackTrace();
         }
