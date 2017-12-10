@@ -4,22 +4,48 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.Scanner;
 public class Client {
-	public static void parseResponse(DataInputStream in){
+	// Parse response debe regresar un entero indicando si a continuacion debe haber entrada del usuario
+	public static void parseResponse(DataInputStream in,DataOutputStream out){
 		try{
 			System.out.println("Entre a parseResponse");
 			byte[] data = new byte[512];
 			//Cuantos datos envio el server
 			int count = in.read(data);
+			int idpok=-1;
+			int intentos=-1;
+			int imgsize = -1;
 			System.out.println("Count es "+count);
+			for(int i=0;i<count;i++)
+				System.out.print(data[i]+" ");
 			if(count >0){
 				switch(data[0]){
 					case 20:
-						int idpok = data[1];
+						idpok= data[1];
 						System.out.println("Capturar pokemon? id "+idpok);
+						break;
+					case 21:
+						idpok = data[1];
+						intentos = data[2];
+						System.out.println("Reintentar id "+idpok+" intentos "+intentos);
+						break;
+					case 22:
+						idpok = data[1];
+						imgsize = data[2];
+						System.out.println("Pokemon capturado "+idpok);
+						System.out.println("Img size: "+imgsize);
+						//Aqui recibo los siguientes paquetes
+						break;
+					case 23:
+						System.out.println("Intentos agotados");
+						terminaSesion(out);
+						break;
+					case 32:
+						System.out.println("Terminando sesion");
+						System.exit(1);
 						break;
 				}
 			}
-			System.out.println(Arrays.toString(data));
+			//System.out.println(Arrays.toString(data));
 		}catch(Exception ex){
 			System.out.println("ClientResponse: "+ex);
 		}
@@ -55,6 +81,30 @@ public class Client {
 		}
 	}
 	
+	public static void terminaSesion(DataOutputStream out){
+		try{
+			System.out.println("Entre a termina sesion");
+			byte b = 32;
+			byte[] bytes = {b};
+			out.write(bytes);
+		}catch(Exception ex){
+			System.out.println("Ocurrio un error al enviar los datos");
+		}	
+	}
+	
+	public static void sendResponse(DataOutputStream out,Scanner sc){
+		String linea = sc.nextLine();
+		System.out.println("linea "+linea);
+		if(linea.equals("y")){
+			System.out.println("SI");
+			enviaSi(out);
+		}else{
+			System.out.println("NO");
+			enviaNo(out);
+		}
+		//parseResponse(in);
+	}
+	
 	public static void main(String [] args) {
 		String serverName = "127.0.0.1";
 		int port = Integer.parseInt("9999");
@@ -72,18 +122,11 @@ public class Client {
 			// Inicio de conexion y edatos
 			iniciaConexion(out);
 			// Parse response
-			parseResponse(in);
-			String linea = sc.nextLine();
-			System.out.println("linea "+linea);
-			if(linea.equals("y")){
-				System.out.println("SI");
-				enviaSi(out);
-			}else{
-				System.out.println("NO");
-				enviaNo(out);
+			while(true){
+				parseResponse(in,out);
+				sendResponse(out,sc);
 			}
-			parseResponse(in);
-			client.close();
+			//client.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

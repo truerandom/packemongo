@@ -12,7 +12,7 @@ public class Server extends Thread {
       serverSocket = new ServerSocket(port);
       serverSocket.setSoTimeout(18000);
       //intentos de captura
-      intentos = 5;
+      intentos = 3;
       //estado
       estado = 0;
    }
@@ -57,13 +57,15 @@ public class Server extends Thread {
 							if(this.intentos > 0){
 								if(this.estado == 1){
 									System.out.println("Puedes capturar");
-									byte resx = (byte)(((Math.random()* 10)) %5) ;
+									byte resx = (byte)(((Math.random()* 10)) %7) ;
 									System.out.println("El resultado fue"+resx);
 									if(resx == 1){
 										System.out.println("Packemon capturado");
+										arr = new byte[]{22,pokid,100};
+										out.write(arr);
 									}
 									else{
-										arr = new byte[]{22,pokid,this.intentos};
+										arr = new byte[]{21,pokid,this.intentos};
 										intentos--;
 										out.write(arr);
 									}
@@ -73,7 +75,14 @@ public class Server extends Thread {
 							}else{
 								System.out.println("Intentos agotados");
 								// Debo mandar el paquete 23
+								arr = new byte[]{23};
+								out.write(arr);
 							}
+							break;
+						case 32:
+							System.out.println("Terminando la sesion del cliente");
+							arr = new byte[]{32};
+							out.write(arr);
 					}
 				}else{
 					System.exit(1);
