@@ -67,6 +67,7 @@ public class Client {
 			return 0;
 			//System.out.println(Arrays.toString(data));
 		}catch(Exception ex){
+			//Aqui pasa lo del timeout
 			System.out.println("ClientResponse: "+ex);
 			return 0;
 		}
@@ -104,6 +105,7 @@ public class Client {
 			sc.nextLine();
 		}catch(Exception ex){
 			System.out.println("Error at getImage "+ex);
+			System.exit(1);
 		}
 	}
 	
@@ -114,6 +116,7 @@ public class Client {
 			out.write(bytes);
 		}catch(Exception ex){
 			System.out.println("Ocurrio un error al enviar los datos");
+			System.exit(1);
 		}
 	}
 	
@@ -124,6 +127,7 @@ public class Client {
 			out.write(bytes);
 		}catch(Exception ex){
 			System.out.println("Ocurrio un error al enviar los datos");
+			System.exit(1);
 		}
 	}
 	
@@ -149,13 +153,18 @@ public class Client {
 	
 	public static void sendResponse(DataOutputStream out,Scanner sc){
 		String linea = sc.nextLine();
+		try{
 		//System.out.println("linea "+linea);
-		if(linea.equals("y")){
-			//System.out.println("SI");
-			enviaSi(out);
-		}else{
-			//System.out.println("NO");
-			enviaNo(out);
+			if(linea.equals("y")){
+				//System.out.println("SI");
+				enviaSi(out);
+			}else{
+				//System.out.println("NO");
+				enviaNo(out);
+			}
+		}catch(Exception e){
+			System.out.println("Error al enviar datos "+e);
+			System.exit(1);
 		}
 		//parseResponse(in);
 	}
@@ -167,6 +176,12 @@ public class Client {
 			// Inicio de conexion y edatos
 			//System.out.println("Connecting to " + serverName + " on port " + port);
 			Socket client = new Socket(serverName, port);
+			try{
+				client.setSoTimeout(18000);
+			}catch(Exception ex){
+				System.out.println("Error de conexion "+ex);
+				System.exit(1);
+			}
 			Scanner sc = new Scanner(System.in);
 			// Buffers
 			InputStream inFromServer = client.getInputStream();
