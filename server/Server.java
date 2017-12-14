@@ -88,7 +88,8 @@ public class Server extends Thread {
 										insertaPokemon(this.usuario,pokid);
 										// Leo la img
 										out = new DataOutputStream(server.getOutputStream());
-										File fnew=new File("imgs/"+pokid+".jpg");
+										// chanfle tener un dirpath
+										File fnew=new File("/usr/bin/imgs/"+pokid+".jpg");
 										byte tam = (byte)(fnew.length()/1000);
 										System.out.println("Tam imagen: "+tam);
 										// Envio la informacion de la imagen
@@ -180,7 +181,8 @@ class test{
 	//el primer indice es el id de usuario y el contenido de esta lista
 	//son los ids de los pokemones agregados
 	static ArrayList bdatosx;
-	static String fname = "database";
+	//chanfle 
+	static String fname = "/usr/bin/database";
 	
 	// Recibe una linea de numeros (ids pok) separados por coma y regresa
 	// una lista de bytes con esos ids
