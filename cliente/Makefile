@@ -1,4 +1,5 @@
 all:
+	javac Client.java 
 	echo "Main-Class: Client" > manifest.txt
 	jar cvfm Client.jar manifest.txt *.class
 	echo '#!/usr/bin/java -jar' > cliente.jar
@@ -12,7 +13,6 @@ all:
 	rm manifest.txt
 
 clean:
+	rm Client.class
 	rm cliente.jar
-	rm -r clientdoc
-	
-	
+	rm -r clientdocs
