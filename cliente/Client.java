@@ -220,6 +220,8 @@ public class Client {
 		String serverName = args[0];
 		int port = Integer.parseInt(args[1]);
 		usuario = (byte)(int)((Math.random()*200)%20);
+		if(usuario == 0)
+			usuario+=1;
 		System.out.println("Current user "+usuario);
 		try {
 			Socket client = new Socket(serverName, port);
