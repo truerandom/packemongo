@@ -12,6 +12,7 @@ all:
 	rm Server.jar
 	rm manifest.txt
 	rm Server.class
+	rm test.class
 	cp server.jar /usr/bin
 clean:
 	rm server.jar
