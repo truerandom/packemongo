@@ -1,0 +1,14 @@
+echo "Main-Class: Client" > manifest.txt
+jar cvfm Client.jar manifest.txt *.class
+cat header Client.jar > cliente.jar
+donde header tiene:
+#!/usr/bin/java -jar
+chmod +x cliente.jar
+./cliente.jar
+
+Para generar la documentacion:
+mkdir clientdoc
+javadoc -d clientdoc/ Client.java
+cp clientdoc/Client.html clientdoc/Client.htm
+rm clientdoc/*.html
+

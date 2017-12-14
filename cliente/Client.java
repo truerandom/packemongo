@@ -12,9 +12,10 @@ public class Client {
 	static List myBytes = new ArrayList<Byte>();
 	static byte usuario = -1;
 	
-	/*
-	Encargado de recibir los datos del servidor
-	Regresa 1 si debido a estos datos es necesaria la interaccion del usuario
+	/**
+	Funcion encargada de recibir e interpretar los datos del servidor 
+	@param InputStream y Output stream de la conexion con el server
+	@return 1 si debido a estos datos es necesaria la interaccion del usuario
 	0 en otro caso.
 	*/
 	public static int parseResponse(DataInputStream in,DataOutputStream out){
@@ -41,8 +42,6 @@ public class Client {
 						idpok = data[1];
 						imgsize = data[2];
 						System.out.println("Pokemon capturado "+idpok);
-						//System.out.println("Img size: "+imgsize);
-						//Aqui recibo los siguientes paquetes
 						getImage(in);
 						return 0;
 					case 23:
@@ -58,7 +57,7 @@ public class Client {
 					case 40:
 						System.out.println("Error en la comunicacion: captura");
 						System.exit(1);
-					//Si no es algun caso anterior lo pego a buffer de img
+					// Consulta de los pokemones de este usuario
 					case 50:
 						System.out.println("Pokemones de este usuario en la bd\nids:");
 						for(int i=1;i<count;i++)
@@ -73,19 +72,19 @@ public class Client {
 			}
 			return 0;
 		}catch(Exception ex){
-			//Aqui pasa lo del timeout
 			System.out.println("ClientResponse: "+ex);
 			return 0;
 		}
 	}
 	
-	/*
+	/**
 	Funcion encargada de recibir los datos de la imagen esta sera mostrada
 	y se escribira en el disco
+	@param InputStream de la conexion con el server
+	@return void
 	*/
 	public static void getImage(DataInputStream in){
 		String fname="pokemon";
-		//System.out.println("Entre a getImage");
 		byte[] data = new byte[1024];
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		//Cuantos datos envio el server
@@ -109,7 +108,6 @@ public class Client {
 			f.pack();
 			f.setLocation(200,200);
 			f.setVisible(true);
-			// Chanfle similar a getchar en c
 			Scanner sc = new Scanner(System.in);
 			sc.nextLine();
 		}catch(Exception ex){
@@ -118,6 +116,11 @@ public class Client {
 		}
 	}
 	
+	/**
+	* Funcion que envia la solicitud de inicio 
+	* @param OutputStream de la conexion con el server
+	* @return void
+	*/
 	public static void iniciaConexion(DataOutputStream out){
 		try{
 			byte b = 10;
@@ -130,6 +133,11 @@ public class Client {
 		}
 	}
 	
+	/**
+	 * Funcion para enviar un paquete de confirmacion si
+	 * @param OutputStream de la conexion con el server
+	 * @return void
+	 */
 	public static void enviaSi(DataOutputStream out){
 		try{
 			byte b = 30;
@@ -141,6 +149,11 @@ public class Client {
 		}
 	}
 	
+	/**
+	 * Funcion para enviar un paquete de confirmacion no
+	 * @param OutputStream de la conexion con el server
+	 * @return void
+	 */
 	public static void enviaNo(DataOutputStream out){
 		try{
 			byte b = 31;
@@ -151,6 +164,11 @@ public class Client {
 		}
 	}
 	
+	/**
+	 * Funcion para consultar la base de datos del servidor
+	 * @param OutputStream de la conexion con el server
+	 * @return void
+	 */
 	public static void consultaBase(DataOutputStream out){
 		try{
 			byte b = 50;
@@ -161,6 +179,11 @@ public class Client {
 		}
 	}
 	
+	/**
+	 * Funcion para enviar un paquete de termino de sesion
+	 * @param OutputStream de la conexion con el server
+	 * @return void
+	 */
 	public static void terminaSesion(DataOutputStream out){
 		try{
 			byte b = 32;
@@ -171,6 +194,11 @@ public class Client {
 		}	
 	}
 	
+	/**
+	 * Funcion para enviar las respuestas al servidor
+	 * @param OutputStream de la conexion con el server
+	 * @return void
+	 */
 	public static void sendResponse(DataOutputStream out,Scanner sc){
 		String linea = sc.nextLine();
 		try{
@@ -185,6 +213,11 @@ public class Client {
 		}
 	}
 	
+	/**
+	 * Punto de entrada del ejecutable recibe host y puerto como args
+	 * @param host
+	 * @param puerto
+	 */
 	public static void main(String [] args) {
 		if(args.length!=2){
 			System.out.println("\nUsage\n java Client <ip> <port>");
