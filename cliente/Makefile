@@ -6,13 +6,13 @@ all:
 	cat Client.jar >> cliente.jar
 	chmod +x cliente.jar
 	mkdir clientdoc
-	javadoc -d clientdoc/ Client.java
+	javadoc -quiet -d clientdoc/ Client.java -Xdoclint:none
 	cp clientdoc/Client.html clientdoc/Client.htm
 	rm clientdoc/*.html
 	rm Client.jar
 	rm manifest.txt
-
-clean:
 	rm Client.class
+	
+clean:
 	rm cliente.jar
-	rm -r clientdocs
+	rm -r clientdoc

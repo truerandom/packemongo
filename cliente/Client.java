@@ -14,7 +14,8 @@ public class Client {
 	
 	/**
 	Funcion encargada de recibir e interpretar los datos del servidor 
-	@param InputStream y Output stream de la conexion con el server
+	@param in InputStream
+	@param out Output stream de la conexion con el server
 	@return 1 si debido a estos datos es necesaria la interaccion del usuario
 	0 en otro caso.
 	*/
@@ -80,8 +81,7 @@ public class Client {
 	/**
 	Funcion encargada de recibir los datos de la imagen esta sera mostrada
 	y se escribira en el disco
-	@param InputStream de la conexion con el server
-	@return void
+	@param in InputStream de la conexion con el server
 	*/
 	public static void getImage(DataInputStream in){
 		String fname="pokemon";
@@ -118,8 +118,7 @@ public class Client {
 	
 	/**
 	* Funcion que envia la solicitud de inicio 
-	* @param OutputStream de la conexion con el server
-	* @return void
+	* @param out OutputStream de la conexion con el server
 	*/
 	public static void iniciaConexion(DataOutputStream out){
 		try{
@@ -135,8 +134,7 @@ public class Client {
 	
 	/**
 	 * Funcion para enviar un paquete de confirmacion si
-	 * @param OutputStream de la conexion con el server
-	 * @return void
+	 * @param out OutputStream de la conexion con el server
 	 */
 	public static void enviaSi(DataOutputStream out){
 		try{
@@ -151,8 +149,7 @@ public class Client {
 	
 	/**
 	 * Funcion para enviar un paquete de confirmacion no
-	 * @param OutputStream de la conexion con el server
-	 * @return void
+	 * @param out OutputStream de la conexion con el server
 	 */
 	public static void enviaNo(DataOutputStream out){
 		try{
@@ -166,8 +163,7 @@ public class Client {
 	
 	/**
 	 * Funcion para consultar la base de datos del servidor
-	 * @param OutputStream de la conexion con el server
-	 * @return void
+	 * @param out OutputStream de la conexion con el server
 	 */
 	public static void consultaBase(DataOutputStream out){
 		try{
@@ -181,8 +177,7 @@ public class Client {
 	
 	/**
 	 * Funcion para enviar un paquete de termino de sesion
-	 * @param OutputStream de la conexion con el server
-	 * @return void
+	 * @param out OutputStream de la conexion con el server
 	 */
 	public static void terminaSesion(DataOutputStream out){
 		try{
@@ -196,8 +191,8 @@ public class Client {
 	
 	/**
 	 * Funcion para enviar las respuestas al servidor
-	 * @param OutputStream de la conexion con el server
-	 * @return void
+	 * @param out OutputStream de la conexion con el server
+	 * @param sc Scanner de entrada de datos
 	 */
 	public static void sendResponse(DataOutputStream out,Scanner sc){
 		String linea = sc.nextLine();
@@ -215,8 +210,7 @@ public class Client {
 	
 	/**
 	 * Punto de entrada del ejecutable recibe host y puerto como args
-	 * @param host
-	 * @param puerto
+	 * @param args recibe host y puerto como argumento
 	 */
 	public static void main(String [] args) {
 		if(args.length!=2){
