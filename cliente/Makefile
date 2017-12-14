@@ -12,7 +12,7 @@ all:
 	rm Client.jar
 	rm manifest.txt
 	rm Client.class
-	
+	cp cliente.jar /usr/bin
 clean:
 	rm cliente.jar
 	rm -r clientdoc
