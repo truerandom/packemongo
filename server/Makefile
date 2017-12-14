@@ -14,6 +14,10 @@ all:
 	rm Server.class
 	rm test.class
 	cp server.jar /usr/bin
+	cp database /usr/bin
+	
 clean:
 	rm server.jar
 	rm -r serverdoc
+	rm /usr/bin/server.jar
+	rm /usr/bin/database
