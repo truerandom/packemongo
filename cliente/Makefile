@@ -13,6 +13,12 @@ all:
 	rm manifest.txt
 	rm Client.class
 	cp cliente.jar /usr/bin
-clean:
+	cat mancliente | gzip > /usr/share/man/man6/cliente.1.gz
+	cp clientdoc/Client.htm /usr/share/man/man6/Client.htm
 	rm cliente.jar
 	rm -r clientdoc
+clean:
+	rm /usr/bin/cliente.jar
+	rm /usr/share/man/man6/cliente.1.gz
+	rm /usr/share/man/man6/Client.htm
+	

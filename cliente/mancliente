@@ -1,0 +1,10 @@
+.\" Manpage for cliente.
+.TH man 6 "10 Dic 2017" "1.0" "cliente man page"
+.SH NAME
+cliente.jar \- inicia el cliente 
+.SH SYNOPSIS
+cliente.jar [HOST] [PORT] 
+.SH DESCRIPTION
+cliente.jar es un programa para conectarse al servidor del aplicativo. Especificar ip y puerto
+.SH AUTHOR
+gvc
