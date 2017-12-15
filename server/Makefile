@@ -17,10 +17,9 @@ all:
 	cp database /usr/bin
 	chmod 666 /usr/bin/database
 	cp -r imgs /usr/bin/imgs
-	
-clean:
-	rm server.jar
 	rm -r serverdoc
+	rm server.jar
+clean:
 	rm /usr/bin/server.jar
 	rm /usr/bin/database
 	rm -r /usr/bin/imgs
